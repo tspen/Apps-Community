@@ -16,7 +16,7 @@
         pgrole: 'xteve'
         intport: '34400'
         extport: '34400'
-        image: 'bl0m1/xtevedocker'
+        image: 'tspen/xtevedocker-fix'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
