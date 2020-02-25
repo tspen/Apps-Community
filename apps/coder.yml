@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Title:      PGBlitz (jlesage/filebot)
-# Author(s):  MrDoob
+# Title:      PGBlitz (Reference Title File)
+# Author(s):  Admin9705
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
@@ -9,21 +9,20 @@
 - hosts: localhost
   gather_facts: false
   tasks:
-    # FACTS #######################################################################
+    # CORE (MANDATORY) DO NOT CHANGE ###########################################
+
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'filebot'
-        intport: '5800'
-        extport: '5804'
-        intport2: '5900'
-        extport2: '5903'
-        image: 'jlesage/filebot'
+        pgrole: 'coder'
+        intport: '8080'
+        extport: '8080'
+        image: 'codercom/code-server'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-    # LABELS ######################################################################
+    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
@@ -44,20 +43,19 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/config'
-          - '/opt/appdata/{{pgrole}}/data:/data'
+          - '/etc/localtime:/etc/localtime:ro'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
-          - '/mnt:/storage:rw'
-          - '/etc/localtime:/etc/localtime:ro'
-
+          - '/opt/appdata/{{pgrole}}:/home/coder/project'
+          
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
           PUID: '1000'
           PGID: '1000'
 
-    # MAIN DEPLOYMENT #############################################################
+    # MAIN SCRIPT ##############################################################
+
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'
@@ -65,7 +63,6 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
-          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
