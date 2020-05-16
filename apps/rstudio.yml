@@ -16,7 +16,7 @@
         pgrole: 'rstudio'
         intport: '8787'
         extport: '8787'
-        image: 'rocker/rstudio'
+        image: 'rocker/tidyverse'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
