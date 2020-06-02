@@ -16,6 +16,8 @@
         pgrole: 'coder'
         intport: '8080'
         extport: '8080'
+        dev_extport: '5000'
+        dev_intport: '5000'
         image: 'codercom/code-server'
 
     # CORE (MANDATORY) ############################################################
@@ -28,17 +30,28 @@
         pg_labels:
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
-          traefik.port: '{{intport}}'
-          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
-          traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
-          traefik.frontend.headers.SSLRedirect: 'true'
-          traefik.frontend.headers.STSIncludeSubdomains: 'true'
-          traefik.frontend.headers.STSPreload: 'true'
-          traefik.frontend.headers.STSSeconds: '315360000'
-          traefik.frontend.headers.browserXSSFilter: 'true'
-          traefik.frontend.headers.contentTypeNosniff: 'true'
-          traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
-          traefik.frontend.headers.forceSTSHeader: 'true'
+          traefik.coder.port: '{{intport}}'
+          traefik.coder.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
+          traefik.coder.frontend.headers.SSLHost: '{{domain.stdout}}'
+          traefik.coder.frontend.headers.SSLRedirect: 'true'
+          traefik.coder.frontend.headers.STSIncludeSubdomains: 'true'
+          traefik.coder.frontend.headers.STSPreload: 'true'
+          traefik.coder.frontend.headers.STSSeconds: '315360000'
+          traefik.coder.frontend.headers.browserXSSFilter: 'true'
+          traefik.coder.frontend.headers.contentTypeNosniff: 'true'
+          traefik.coder.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
+          traefik.coder.frontend.headers.forceSTSHeader: 'true'
+          traefik.coder_dev.port: '{{dev_intport}}'
+          traefik.coder_dev.frontend.rule: 'Host:{{pgrole}}_dev.{{domain.stdout}}{{tldset}}{{cname}}'
+          traefik.coder_dev.frontend.headers.SSLHost: '{{domain.stdout}}'
+          traefik.coder_dev.frontend.headers.SSLRedirect: 'true'
+          traefik.coder_dev.frontend.headers.STSIncludeSubdomains: 'true'
+          traefik.coder_dev.frontend.headers.STSPreload: 'true'
+          traefik.coder_dev.frontend.headers.STSSeconds: '315360000'
+          traefik.coder_dev.frontend.headers.browserXSSFilter: 'true'
+          traefik.coder_dev.frontend.headers.contentTypeNosniff: 'true'
+          traefik.coder_dev.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
+          traefik.coder_dev.frontend.headers.forceSTSHeader: 'true'
 
     - name: 'Setting PG Volumes'
       set_fact:
@@ -64,6 +77,7 @@
         pull: yes
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '{{ports.stdout}}{{dev_extport}}:{{dev_intport}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
