@@ -47,6 +47,8 @@
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
           - '/opt/appdata/{{pgrole}}:/home/rstudio'
+          - '/opt/appdata/{{pgrole}}/packages:/usr/local/lib/R/site-library'
+
           
     - name: 'Setting PG ENV'
       set_fact:
