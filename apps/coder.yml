@@ -46,7 +46,8 @@
           - '/etc/localtime:/etc/localtime:ro'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
-          - '/opt/appdata/{{pgrole}}:/home/coder/project'
+          - '/opt/appdata/{{pgrole}}/projects:/home/coder/project'
+          - '/opt/appdata/{{pgrole}}/config:/home/coder/.local/share/code-server'
           
     - name: 'Setting PG ENV'
       set_fact:
