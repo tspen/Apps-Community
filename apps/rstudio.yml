@@ -57,6 +57,8 @@
           PGID: '1000'
           PASSWORD: "{{ lookup('env','RSTUDIO_PASSWORD') }}"
           ROOT: 'TRUE'
+          
+    - debug: msg="{{ lookup('env','RSTUDIO_PASSWORD') }} is an environment variable"
 
     # MAIN SCRIPT ##############################################################
 
