@@ -36,7 +36,7 @@
           DRONE_RPC_SECRET: "{{ lookup('env','DRONE_SHARED_SECRET') }}"
           DRONE_RPC_HOST: "drone.{{domain.stdout}}{{tldset}}"
           DRONE_RPC_PROTO: "https"
-          DRONE_RUNNER_CAPACITY: 2
+          DRONE_RUNNER_CAPACITY: "2"
           DRONE_RUNNER_NAME: "arnold"
           
     # MAIN SCRIPT ##############################################################
