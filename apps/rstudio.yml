@@ -55,7 +55,7 @@
         pg_env:
           PUID: '1000'
           PGID: '1000'
-          PASSWORD: 'changeme'
+          PASSWORD: "{{ lookup('env','RSTUDIO_PASSWORD') }}"
           ROOT: 'TRUE'
 
     # MAIN SCRIPT ##############################################################
