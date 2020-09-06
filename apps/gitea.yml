@@ -16,7 +16,7 @@
         intport: '3000'
         extport: '9898'
         intport2: '22' ##for SSH
-        extport2: '222'
+        extport2: '2222'
 
         image: 'gitea/gitea'
 
@@ -54,6 +54,7 @@
         pg_env:
           PUID: '1000'
           PGID: '1000'
+          ROOT_URL: 'https://{{pgrole}}.{{domain.stdout}}{{tldset}}'
 
       #### DB_PASSWORD: gitea
     # MAIN DEPLOYMENT #############################################################
