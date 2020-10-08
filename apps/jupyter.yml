@@ -16,7 +16,7 @@
         pgrole: 'jupyter'
         intport: '8888'
         extport: '8889'
-        image: 'jupyter/datascience-notebook:latest'
+        image: 'jupyter/scipy-notebook:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
