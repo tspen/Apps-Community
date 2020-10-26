@@ -9,24 +9,24 @@
 - hosts: localhost
   gather_facts: false
   tasks:
-    # CORE (MANDATORY) DO NOT CHANGE ###########################################
-
+    # FACTS #######################################################################DONE####
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'nexus'
         intport: '8081'
         extport: '8081'
+
         image: 'sonatype/nexus3'
 
-    # CORE (MANDATORY) ############################################################
+    # CORE (MANDATORY) ############################################################DONE####
     - name: 'Including cron job'
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
-    # LABELS #### KEEPS BOTTOM CLEAN ###########################################
+    # LABELS ######################################################################
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.frontend.auth.forward.address: '{{gauth}}'
+          ##########traefik.frontend.auth.forward.address: '{{gauth}}' ##Disabled OAuth as you cant user terminal for cloning any repo
           traefik.enable: 'true'
           traefik.port: '{{intport}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
@@ -43,26 +43,28 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/etc/localtime:/etc/localtime:ro'
-          - '{{path.stdout}}:{{path.stdout}}'
-          - '/mnt:/mnt'
           - '/opt/appdata/{{pgrole}}:/nexus-data'
-          
+          - '/etc/localtime:/etc/localtime:ro'
+
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
           PUID: '1000'
           PGID: '1000'
+          ROOT_URL: 'https://{{pgrole}}.{{domain.stdout}}{{tldset}}'
 
-    # MAIN SCRIPT ##############################################################
-
+      #### DB_PASSWORD: gitea
+    # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
       docker_container:
         name: '{{pgrole}}'
         image: '{{image}}'
         pull: yes
+        #   links:
+        #  - "dbgitea:idk?"
         published_ports:
           - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
