@@ -54,6 +54,8 @@
         pg_env:
           PUID: '1000'
           PGID: '1000'
+          SQLPAD_ADMIN_PASSWORD: "{{ lookup('env','RSTUDIO_PASSWORD') }}"
+          SQLPAD_ADMIN: 'admin@sqlpad.com'
           
     # MAIN SCRIPT ##############################################################
 
